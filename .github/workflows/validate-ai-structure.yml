@@ -1,0 +1,29 @@
+name: Validate .ai structure
+
+on:
+  push:
+    paths:
+      - ".ai/**"
+      - "CLAUDE.md"
+      - "AGENTS.md"
+      - ".github/copilot-instructions.md"
+      - ".github/instructions/**"
+      - "scripts/validate-ai-structure.sh"
+      - ".github/workflows/validate-ai-structure.yml"
+  pull_request:
+    paths:
+      - ".ai/**"
+      - "CLAUDE.md"
+      - "AGENTS.md"
+      - ".github/copilot-instructions.md"
+      - ".github/instructions/**"
+      - "scripts/validate-ai-structure.sh"
+      - ".github/workflows/validate-ai-structure.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run .ai structure validator
+        run: bash scripts/validate-ai-structure.sh

@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn test:*)",
+      "Bash(mvn clean test:*)",
+      "Bash(mvn verify:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run test:*)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run build:*)",
+      "Bash(git diff:*)",
+      "Bash(git status:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(docker system prune:*)",
+      "Bash(kubectl delete:*)",
+      "Bash(terraform destroy:*)"
+    ]
+  }
+}

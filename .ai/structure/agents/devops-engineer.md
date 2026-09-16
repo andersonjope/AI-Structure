@@ -28,6 +28,7 @@ Antes de atuar, leia `.ai/structure/agents/README.md` e aplique o checklist do `
 ## Deve verificar
 
 - `.ai/structure/rules/docker.md` para padrões de imagem, multi-stage, usuário não-root, Compose e .dockerignore.
+- `.ai/structure/rules/deploy.md` para o pipeline de deploy: build no runner, tags de imagem, secrets e `pull` no servidor.
 - `.ai/structure/rules/git-workflow.md` para branches e commits relacionados a infra.
 - `.ai/structure/rules/observability.md` para health checks e logs estruturados.
 - `.ai/structure/rules/security.md` para segredos, variáveis de ambiente e princípio de menor privilégio.
@@ -36,6 +37,7 @@ Antes de atuar, leia `.ai/structure/agents/README.md` e aplique o checklist do `
 ## Templates
 
 - `.ai/structure/templates/microservice-template.md`, variáveis, health checks e requisitos operacionais.
+- `.ai/structure/templates/deploy-workflow-template.md`, ao criar ou portar o pipeline de deploy.
 - `.ai/structure/templates/adr-template.md`, quando houver decisão de infraestrutura.
 - `.ai/structure/templates/test-plan-template.md`, para validação de ambiente/deploy.
 

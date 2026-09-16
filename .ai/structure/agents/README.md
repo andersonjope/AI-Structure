@@ -266,6 +266,8 @@ Saída mínima:
 
 Ler:
 
+- `.ai/structure/rules/docker.md`
+- `.ai/structure/rules/deploy.md`
 - `.ai/structure/rules/git-workflow.md`
 - `.ai/structure/rules/observability.md`
 - `.ai/structure/rules/security.md`
@@ -279,10 +281,13 @@ Validar:
 - Imagens sem root quando possível.
 - Separação de ambientes.
 - Sem segredos versionados.
+- Build no runner de CI, servidor de produção só faz `pull` (sem `--build`).
+- Imagem publicada com tag `:latest` e tag `:<sha>` para rollback.
 
 Saída mínima:
 
 - Dockerfile, Compose, pipeline, variáveis, estratégia de deploy e riscos operacionais.
+- Ao criar/portar pipeline de deploy, usar `.ai/structure/templates/deploy-workflow-template.md`.
 
 ### refactor-guard
 

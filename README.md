@@ -67,11 +67,30 @@ partir do primeiro serviço/feature real que o projeto criar:
 - `apps/backend/shared`: bibliotecas compartilhadas do backend, sem regra específica de um serviço.
 - `apps/mobile-app`: aplicativo Ionic Angular. Veja [`apps/mobile-app/README.md`](apps/mobile-app/README.md) para o esqueleto de referência (feature "Items").
 - `libs/frontend-common`: bibliotecas compartilhadas do frontend.
-- `infra`: infraestrutura local e deploy (Docker Compose, Nginx).
+- `infra`: infraestrutura local e deploy (`docker-compose.yml` local, `docker-compose.prod.yml`, `.env.prod.example`, `deploy/`).
+- `docs`: documentação do projeto (`stories/`, `implementation/`, auditorias e `env/`), conforme `.ai/structure/rules/documentation.md`.
+- `.github/workflows`: workflows reais do projeto, criados a partir dos modelos em `.ai/structure/templates/` (CI, auditoria de dependências e deploy). Este repositório-base versiona apenas o `validate-ai-structure.yml`.
 
 A lista de serviços e features reais de cada projeto fica em
 `.ai/context/bounded-contexts.md`, não aqui — esta seção descreve a
 convenção de pastas, não o inventário de um produto específico.
+
+## Pipeline (CI, auditoria e deploy)
+
+Modelos prontos para copiar e adaptar, com as regras em `.ai/structure/rules/ci.md` e `.ai/structure/rules/deploy.md`:
+
+| Necessidade | Modelo |
+|---|---|
+| CI com gate de cobertura | `.ai/structure/templates/ci-workflow-template.md` |
+| Auditoria de dependências | `.ai/structure/templates/dependency-audit-workflow-template.md` |
+| Workflow de deploy | `.ai/structure/templates/deploy-workflow-template.md` |
+| Scripts de deploy e runbook | `.ai/structure/templates/deploy-scripts-template.md` |
+
+## Documentação do projeto
+
+Story, relato de implementação, auditoria e migração de dados têm modelo próprio
+(`story-template.md`, `implementation-report-template.md`, `audit-report-template.md`,
+`data-migration-template.md`); ver `.ai/structure/rules/documentation.md`.
 
 ## Fluxo recomendado
 

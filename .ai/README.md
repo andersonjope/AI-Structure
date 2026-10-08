@@ -37,7 +37,7 @@ Para qualquer tarefa relevante, uma IA deve seguir esta ordem:
 
 Esta estrutura pode ser reutilizada em outros projetos, desde que seja adaptada em três camadas:
 
-- **Universal**: agentes, Definition of Done, modelo de ADR (`.ai/structure/templates/adr-template.md`), templates de contrato, segurança, testes, clean code e observabilidade.
+- **Universal**: agentes, Definition of Done, modelo de ADR (`.ai/structure/templates/adr-template.md`), templates de contrato, segurança, testes, clean code, observabilidade, documentação (`rules/documentation.md`) e pipeline de CI/deploy (`rules/ci.md`, `rules/deploy.md`, com os respectivos templates).
 - **Stack-specific**: regras de Spring Boot, MongoDB, Ionic Angular, Docker e padrões de monorepo.
 - **Product-specific**: contexto de negócio, bounded contexts, linguagem ubíqua, integrações, requisitos não funcionais e ADRs reais.
 

@@ -9,7 +9,16 @@
       "Bash(npm run lint:*)",
       "Bash(npm run build:*)",
       "Bash(git diff:*)",
-      "Bash(git status:*)"
+      "Bash(git status:*)",
+      "Bash(./mvnw test:*)",
+      "Bash(./mvnw verify:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm --filter:*)",
+      "Bash(docker compose config:*)",
+      "Bash(bash scripts/validate-ai-structure.sh:*)",
+      "Bash(git log:*)"
     ],
     "deny": [
       "Bash(rm -rf:*)",

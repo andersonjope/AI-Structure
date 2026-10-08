@@ -9,6 +9,8 @@
 #      tecnico) — evita agente orfao, nunca listado como papel disponivel.
 #   4. Toda skill em .claude/skills/<nome>/SKILL.md precisa ter frontmatter com
 #      `name` igual ao diretorio e `description` preenchida.
+#   5. Perfil do projeto (.ai/project.md): `status` precisa ser um valor valido; com
+#      `status: inicializado`, nenhum marcador `<!-- TEMPLATE:... -->` pode restar.
 #
 # Uso: scripts/validate-ai-structure.sh
 # Saida: exit 0 se tudo ok, exit 1 se encontrar qualquer inconsistencia.
@@ -128,6 +130,31 @@ fi
 if [ -n "$bad_skills" ]; then
   echo "FALHA: skills invalidas:"
   echo "$bad_skills" | sed '/^$/d' | sed 's/^/  - /'
+  status=1
+else
+  echo "OK"
+fi
+
+echo
+echo "== 5. Perfil do projeto (.ai/project.md) =="
+profile_errors=""
+if [ -f .ai/project.md ]; then
+  profile_status="$(sed -n 's/^status:[[:space:]]*\([a-z-]*\).*/\1/p' .ai/project.md | head -1)"
+  case "$profile_status" in
+    nao-inicializado|em-andamento) ;;
+    inicializado)
+      leftover="$(grep -rnE '^<!-- TEMPLATE:' --include='*.md' . || true)"
+      [ -z "$leftover" ] || profile_errors="${profile_errors}status inicializado, mas restam marcadores de template:"$'\n'"${leftover}"$'\n'
+      ;;
+    *) profile_errors="${profile_errors}status invalido: \"${profile_status}\" (use nao-inicializado, em-andamento ou inicializado)"$'\n' ;;
+  esac
+else
+  profile_errors="${profile_errors}.ai/project.md ausente"$'\n'
+fi
+
+if [ -n "$profile_errors" ]; then
+  echo "FALHA: perfil do projeto inconsistente:"
+  echo "$profile_errors" | sed '/^$/d' | sed 's/^/  - /'
   status=1
 else
   echo "OK"

@@ -35,6 +35,7 @@ Atalhos em `.claude/skills/` que aplicam os templates e as regras de `.ai/` (a f
 - `auditoria`: auditoria de qualidade, segurança e cobertura com achados `AUD-NN`.
 - `migracao-dados`: migração de dados idempotente com testes.
 - `pipeline-ci-deploy`: CI, auditoria de dependências e deploy a partir dos templates.
+- `iniciar-projeto`: transforma o template em projeto (entrevista, `.ai/project.md`, aplica `.ai/structure/stacks.md`). Usar uma vez, no início.
 - `validar-estrutura`: roda e corrige o `scripts/validate-ai-structure.sh`.
 
 ## Regras obrigatórias

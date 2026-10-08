@@ -1,0 +1,33 @@
+# Compose de produção: só imagens do registry, sem `build:`. Enviado à VPS pelo deploy
+# (ver .ai/structure/templates/deploy-scripts-template.md). IMAGE_REGISTRY e IMAGE_TAG
+# vêm do ambiente do comando; o restante, do .env da VPS (nunca versionado).
+#
+# Exemplo com um serviço; repetir o bloco para cada serviço publicado. O nome do serviço
+# deve coincidir com o sufixo da imagem: ${IMAGE_REGISTRY}/<PROJETO>-<servico>.
+services:
+  backend:
+    image: ${IMAGE_REGISTRY}/<PROJETO>-backend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    env_file: .env
+    # Sem `ports:` para o host: a exposição é do proxy reverso, na rede externa.
+    networks: [app-net, data-net]
+    healthcheck:
+      # Ajustar ao endpoint de saúde do serviço (ver observability.md). Deve falhar
+      # quando uma dependência crítica (ex.: MongoDB) estiver indisponível.
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health/readiness || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  # Redes externas: criadas na VPS antes do primeiro deploy.
+  app-net:
+    external: true
+  data-net:
+    external: true

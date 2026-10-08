@@ -1,0 +1,20 @@
+# Infraestrutura local de desenvolvimento: MongoDB para os serviços rodando no host.
+# Subir: docker compose -f infra/docker-compose.yml up -d
+# Stack completa (serviços + frontend): ver .ai/structure/rules/docker.md.
+services:
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    # Só loopback: o Mongo local não tem autenticação e não pode ficar aberto na rede.
+    ports:
+      - "127.0.0.1:27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mongo-data:

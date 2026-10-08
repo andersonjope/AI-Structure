@@ -33,6 +33,8 @@ Antes de atuar, leia `.ai/structure/agents/README.md` e aplique o checklist do `
 - `.ai/structure/templates/usecase-template.md`, quando testar fluxo de aplicação.
 - `.ai/structure/templates/rest-api-template.md`, quando testar API.
 - `.ai/structure/templates/event-contract-template.md`, quando testar contrato/evento.
+- `.ai/structure/templates/implementation-report-template.md`, ao concluir entrega relevante (ver `.ai/structure/rules/documentation.md`).
+- `.ai/structure/templates/data-migration-template.md`, quando houver migração de dados.
 
 ## Saída esperada
 

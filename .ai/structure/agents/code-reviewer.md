@@ -34,6 +34,7 @@ Antes de atuar, leia `.ai/structure/agents/README.md` e aplique o checklist do `
 - `.ai/structure/templates/pull-request-template.md`
 - `.ai/structure/templates/test-plan-template.md`, quando houver lacuna de testes.
 - `.ai/structure/templates/adr-template.md`, quando houver decisão arquitetural não registrada.
+- `.ai/structure/templates/audit-report-template.md`, ao registrar auditoria ampla de qualidade, segurança e cobertura (ver `.ai/structure/rules/documentation.md`).
 
 ## Saída esperada
 

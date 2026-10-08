@@ -37,6 +37,7 @@ Antes de atuar, leia `.ai/structure/agents/README.md` e aplique o checklist do `
 - `.ai/structure/templates/value-object-template.md`
 - `.ai/structure/templates/domain-event-template.md`
 - `.ai/structure/templates/usecase-template.md`, quando a regra precisar de fluxo de aplicação.
+- `.ai/structure/templates/story-template.md`, ao especificar funcionalidade nova (ver `.ai/structure/rules/documentation.md`).
 
 ## Saída esperada
 

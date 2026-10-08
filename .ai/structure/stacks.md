@@ -25,14 +25,14 @@ todo conteúdo novo em português.
 | `<!-- TEMPLATE:ESQUELETO -->` | Referência de stack (READMEs de `apps/`, `docs/env`) | **Adaptar** à stack escolhida, ou remover se a stack não se aplica; depois remover o marcador |
 
 Verificação: `grep -rn "TEMPLATE:" . --include=*.md` não deve retornar nada ao fim da inicialização.
-Termos do produto de exemplo (`AgendaHub` e os nomes de serviço `identity-service`, `company-service`,
-`client-service`, `catalog-service`, `order-service`, `scheduling-service`, `email-service`) também não devem restar,
-exceto em exemplos genéricos intencionais.
+Termos do produto de exemplo (`AgendaHub` e os nomes de serviço de exemplo) também não devem restar; o validador confere
+(ver "Termos residuais").
 
 ## Universal (nunca remover)
 
 - Agentes: `domain-designer`, `tdd-developer`, `code-reviewer`, `api-designer`, `security-reviewer`,
   `observability-engineer`, `performance-engineer`, `devops-engineer`, `refactor-guard`.
+  O agente `microservice-architect` também permanece, mas muda de nome conforme o estilo de arquitetura (ver abaixo).
 - Rules: `architecture`, `clean-code`, `ddd`, `tdd`, `testing`, `security`, `observability`, `performance`,
   `api-contracts`, `git-workflow`, `documentation`, `standard-fields`, `ci`, `docker`.
 - Templates: `adr`, `aggregate`, `value-object`, `domain-event`, `usecase`, `rest-api`, `event-contract`,
@@ -44,6 +44,37 @@ exceto em exemplos genéricos intencionais.
 Pontos que citam várias stacks como opção (ex.: `ci.md`, `ci-workflow-template.md`,
 `dependency-audit-workflow-template.md`, `deploy.md`) permanecem; a skill apenas confirma que o exemplo da stack
 escolhida está presente.
+
+---
+
+## Estilo de arquitetura
+
+### Microservices
+
+**Mantém**: agente `microservice-architect`, rule `.ai/structure/rules/microservices.md` e template
+`.ai/structure/templates/microservice-template.md`.
+
+### Monólito modular
+
+**Remove**
+- Rule `.ai/structure/rules/microservices.md` e template `.ai/structure/templates/microservice-template.md`.
+- As linhas que os citam em `.ai/structure/agents/README.md` e nos agentes `microservice-architect`, `mongodb-specialist`,
+  `performance-engineer`, `observability-engineer` e `devops-engineer` (`grep -rn "microservice-template\|rules/microservices"`).
+
+**Renomeia** (agente de arquitetura): `microservice-architect` → `software-architect`
+1. Renomear `.ai/structure/agents/microservice-architect.md` para `software-architect.md` e reescrever o papel para módulos,
+   fronteiras entre módulos e evolução do monólito (sem serviços independentes, gateway ou banco por serviço).
+2. Atualizar o slug em `CLAUDE.md` (lista de papéis e roteamento), `AGENTS.md`, `.github/copilot-instructions.md`,
+   `.ai/structure/agents/README.md` e demais citações (`grep -rn "microservice-architect"`).
+3. Rodar o validador: ele confirma roster, matriz e arquivo.
+
+**Adapta** (trechos de "microservice(s)" para "módulo(s)" ou removidos, conforme o contexto):
+`.ai/structure/rules/architecture.md`, `ddd.md`, `api-contracts.md`, `observability.md`, `performance.md`, `mongodb.md`,
+`docker.md`, `testing.md`; agentes `api-designer`, `refactor-guard`; `apps/backend/README.md` (esqueleto por módulo, sem
+`services/`); `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md` e `.github/instructions/backend.instructions.md`
+(layout `apps/backend/services` → `apps/backend/src/<modulo>`); `.ai/context/*` (já reescritos pela inicialização).
+
+**Pergunte**: lista de módulos e dependências permitidas entre eles; se haverá extração futura para serviços.
 
 ---
 
@@ -65,6 +96,9 @@ escolhida está presente.
 - `.ai/structure/agents/README.md` e agentes `code-reviewer`, `devops-engineer`, `domain-designer`, `observability-engineer`, `refactor-guard`: trechos específicos de Java/Spring, se houver.
 - `.ai/structure/rules/testing.md` (JUnit/AssertJ/Mockito/Testcontainers) e `docker.md` (seções Java).
 
+- `.ai/structure/rules/mongodb.md`: remover os trechos de Mongoose/NestJS.
+- `README.md` raiz e `.ai/README.md`: descrições da stack do template.
+
 **Pergunte**: Java e Spring Boot (versões), Maven ou Gradle, microservices ou monólito modular, comunicação síncrona e assíncrona.
 
 ### NestJS (Node/TypeScript)
@@ -84,6 +118,11 @@ escolhida está presente.
 - `.ai/structure/rules/testing.md`: seção Backend trocando JUnit/AssertJ/Mockito/Testcontainers por Jest, `@nestjs/testing` e `supertest`.
 - `.ai/structure/rules/docker.md`: seções de Dockerfile Java trocadas por Node (multi-stage, usuário não-root, JRE → Node alpine).
 - `.ai/structure/rules/architecture.md` e `mongodb.md`: manter apenas o trecho da stack escolhida (Mongoose).
+- Agentes `code-reviewer`, `devops-engineer`, `domain-designer`, `observability-engineer`, `refactor-guard` e `.ai/structure/agents/README.md`: trechos de Java/Spring/Maven.
+- `.ai/structure/rules/tdd.md`: exemplos de nomes de teste em Java.
+- `docs/env/README.md`: remover "Como carregar o `.env` com Spring Boot" e comandos `mvn`; documentar o carregamento do `.env` com `ConfigModule`.
+- `README.md` raiz e `.ai/README.md`: descrições da stack do template.
+- `.claude/settings.json`: manter só as permissões do gerenciador escolhido.
 - `package.json`/workspace: ver "Gerenciador de pacotes".
 
 **Pergunte**: versão do Node, gerenciador de pacotes (pnpm, npm, yarn), módulos do domínio, monólito modular ou microservices.
@@ -125,6 +164,8 @@ escolhida está presente.
 - `apps/mobile-app/README.md`: renomear a pasta e o README para `apps/web-app` (ou nome do projeto) e reescrever o esqueleto sem `ion-*`.
 - `.ai/structure/rules/frontend-state.md`, `i18n.md` e `performance.md`: remover menções a Ionic/mobile quando houver.
 - `.github/instructions/frontend.instructions.md`: `applyTo` e regra `angular.md`.
+- Seções "Ionic" de `standard-fields.md`, `testing.md`, `performance.md` e `docker.md` (Dockerfile do frontend): trocar por Angular.
+- `docs/env/README.md` (seção Frontend), `README.md` raiz e `.ai/README.md`.
 
 **Pergunte**: nome do app, necessidade de SSR/SEO, idiomas.
 
@@ -136,6 +177,10 @@ escolhida está presente.
 **Adapta**
 - Remover as linhas de roteamento de "Frontend ..." em `CLAUDE.md`, `AGENTS.md`, `.github/copilot-instructions.md` e `.ai/structure/agents/README.md`.
 - `performance-engineer` e `code-reviewer`: retirar verificações de frontend.
+- Seções de frontend em rules universais: `standard-fields.md` ("Frontend Ionic Angular"), `testing.md` ("Frontend Ionic"),
+  `performance.md` ("Ionic"), `docker.md` (Dockerfile do frontend, `apps/mobile-app` e porta 4200 na tabela de composes).
+- `docs/env/README.md` (seção Frontend), `README.md` raiz e `.ai/README.md`.
+- `.gitignore`/`.dockerignore`: pode manter as entradas (`.angular/`, `www/`), são inofensivas.
 
 ---
 
@@ -176,6 +221,44 @@ ADR (workspace, lockfile único, contexto de build do Docker na raiz).
 
 - `bash scripts/validate-ai-structure.sh` passa.
 - `grep -rn "TEMPLATE:" . --include=*.md` vazio.
-- Nenhum termo do produto de exemplo restante (`AgendaHub` e nomes de serviço de exemplo).
+- Nenhum termo de stack não escolhida nem do produto de exemplo restante: o validador confere as linhas `TERMOS` da seção
+  "Termos residuais" (com `status: inicializado`).
 - `.ai/project.md` com `status: inicializado` e a lista `aplicado` completa.
 - Rosters de `CLAUDE.md`/`AGENTS.md` coerentes com `.ai/structure/agents/`.
+
+---
+
+## Termos residuais (lidos pelo validador)
+
+Com `status: inicializado` em `.ai/project.md`, o `scripts/validate-ai-structure.sh` procura, sem diferenciar maiúsculas,
+os termos abaixo nos arquivos de texto do repositório e falha se algum restar. Cada linha `TERMOS` vale quando o campo
+de `.ai/project.md` tem o valor indicado (`sempre` vale sempre; `outro` vale para qualquer valor que comece com `outro`).
+Cada linha `EXCLUIR` isenta um caminho (arquivo ou pasta, por prefixo): são os documentos que citam várias stacks de propósito.
+Linhas de texto com o comentário `<!-- ok-stack -->` também são ignoradas, para menções intencionais.
+
+Atualizar estas linhas junto com as seções acima.
+
+```text
+TERMOS backend=nestjs :: spring|junit|mockito|assertj|pom\.xml|\bmaven\b|\bjava\b|\.java\b|\bmvn\b|jackson
+TERMOS backend=spring-boot :: nestjs|@nestjs|nest\.js|class-validator|ts-jest|mongoose
+TERMOS backend=nenhum :: spring|junit|mockito|assertj|pom\.xml|\bmaven\b|\bjava\b|\.java\b|\bmvn\b|jackson|nestjs|@nestjs|class-validator|mongoose
+TERMOS frontend=nenhum :: ionic|mobile-app|angular
+TERMOS frontend=angular :: ionic|ion-
+TERMOS estilo=monolito-modular :: microservice|microsservi
+TERMOS banco=outro :: mongo
+TERMOS exemplo=sempre :: agendahub|(identity|company|client|catalog|order|scheduling|email)[-_ ]service|(identity|company|client|catalog|order|scheduling)_mongodb
+
+EXCLUIR .ai/structure/stacks.md
+EXCLUIR .ai/project.md
+EXCLUIR .ai/structure/rules/ci.md
+EXCLUIR .ai/structure/rules/deploy.md
+EXCLUIR .ai/structure/templates/ci-workflow-template.md
+EXCLUIR .ai/structure/templates/dependency-audit-workflow-template.md
+EXCLUIR .ai/structure/templates/deploy-workflow-template.md
+EXCLUIR .ai/structure/templates/deploy-scripts-template.md
+EXCLUIR .github/workflows/
+EXCLUIR .claude/
+EXCLUIR scripts/
+EXCLUIR .gitignore
+EXCLUIR .dockerignore
+```

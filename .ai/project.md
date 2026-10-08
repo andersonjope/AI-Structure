@@ -36,10 +36,11 @@ aplicado: []                  # etapas já aplicadas pela inicialização, para 
 
 ## Etapas registráveis em `aplicado`
 
-`contexto-negocio`, `stack-backend`, `stack-frontend`, `banco`, `entradas-ia`, `readmes-apps`, `env-infra`, `pipeline`, `marcadores-removidos`, `validado`.
+`contexto-negocio`, `estilo-arquitetura`, `stack-backend`, `stack-frontend`, `banco`, `entradas-ia`, `readmes-apps`, `env-infra`, `pipeline`, `marcadores-removidos`, `validado`.
 
 ## Regras
 
 - Não preencher com suposição: campo que o usuário não decidiu fica vazio e vira pergunta em aberto.
 - Mudar uma escolha depois exige registrar ADR (`.ai/structure/templates/adr-template.md`) e reaplicar a seção correspondente de `.ai/structure/stacks.md`.
 - Sem segredos neste arquivo.
+- Os campos `estilo`, `backend`, `frontend` e `banco` precisam de valor para `status: inicializado`; o validador usa esses valores para procurar termos de stack não escolhida (ver `.ai/structure/stacks.md`, seção "Termos residuais").

@@ -69,14 +69,18 @@ Registrar cada etapa concluída em `aplicado` (nomes em `.ai/project.md`). Após
    - `business-context.md`, `bounded-contexts.md`, `ubiquitous-language.md` (termos do domínio do usuário), `integration-map.md`, `architecture-overview.md`, `non-functional-requirements.md`.
    - Remover as ADRs de exemplo (`ADR-001`, `ADR-002` do template) e criar ADRs reais com a skill `nova-adr` para as decisões já tomadas (estilo de arquitetura, banco, gerenciador de pacotes, deploy).
    - Onde o usuário não deu informação: `TODO(contexto)`, nunca texto inventado.
-2. **`stack-backend`**, **`stack-frontend`**, **`banco`**: aplicar **Mantém / Remove / Renomeia / Adapta** das seções escolhidas de `stacks.md`.
+2. **`estilo-arquitetura`**, **`stack-backend`**, **`stack-frontend`**, **`banco`**: aplicar **Mantém / Remove / Renomeia / Adapta** das seções escolhidas de `stacks.md`
+   (inclui o estilo de arquitetura: monólito modular remove `microservices.md`/`microservice-template.md` e renomeia `microservice-architect` para `software-architect`).
    - Ao remover agente ou rule, limpar rosters (`CLAUDE.md`, `AGENTS.md`), tabela e checklists de `.ai/structure/agents/README.md`, linhas de roteamento e `.github/*`.
    - Ao renomear agente (Angular sem Ionic), seguir os passos de `stacks.md` e conferir com `grep -rn "<slug-antigo>"`.
 3. **`entradas-ia`**: atualizar o perfil e a stack em `CLAUDE.md`, `AGENTS.md` e `.github/copilot-instructions.md` (sem mexer na estrutura de regras, papéis e Definition of Done), mais `.github/instructions/*.instructions.md` e permissões do gerenciador escolhido em `.claude/settings.json`.
 4. **`readmes-apps`**: reescrever `apps/backend/README.md` e `apps/mobile-app/README.md` (ou o nome do app) para o esqueleto real, ou remover a pasta se a stack não se aplica; remover `TEMPLATE:ESQUELETO`.
 5. **`env-infra`**: ajustar `.env.example`, `docs/env/README.md`, `infra/docker-compose.yml`, `infra/docker-compose.prod.yml`, `infra/.env.prod.example`, `.gitignore` e `.dockerignore` à stack e aos serviços reais (nomes de serviço, URIs, portas). Nada de segredo.
 6. **`pipeline`**: se houver CI/deploy, chamar a skill `pipeline-ci-deploy` já com as respostas de `project.md` (não perguntar de novo). Se não houver deploy, seguir "Sem deploy no início" de `stacks.md`.
-7. **`marcadores-removidos`**: `grep -rn "^<!-- TEMPLATE:" . --include=*.md` deve ficar vazio; `grep -rni "agendahub" .` e os nomes de serviço de exemplo não devem restar (exceto exemplo genérico intencional).
+7. **`marcadores-removidos`**: marcar `status: inicializado` em `.ai/project.md` **antes** de validar e rodar o validador. Ele falha listando, por escolha, os termos de stack
+   não escolhida e do produto de exemplo que ainda restam (seção "Termos residuais" de `stacks.md`), mais os marcadores `TEMPLATE:`. Reescrever esses trechos
+   (isso é trabalho de leitura e edição, não de busca e troca cega) e repetir até passar. Menção intencional: `<!-- ok-stack -->` na linha, ou `EXCLUIR` no catálogo
+   para documentos que citam várias stacks de propósito (pipeline).
 
 ## Passo 4: fechamento
 
@@ -94,5 +98,6 @@ Registrar cada etapa concluída em `aplicado` (nomes em `.ai/project.md`). Após
 
 - Inventar regra de negócio, bounded context, integração ou ADR sem decisão do usuário.
 - Remover arquivo Universal ou enfraquecer regra de segurança/teste para "simplificar".
-- Deixar referência quebrada, agente órfão ou marcador de template ao declarar `inicializado`.
+- Deixar referência quebrada, agente órfão, marcador de template ou termo residual ao declarar `inicializado`.
+- Silenciar o validador (`ok-stack`, `EXCLUIR`) para esconder texto que deveria ser reescrito.
 - Executar deploy, push, cadastro de secrets ou instalação de dependências sem o usuário pedir.

@@ -25,6 +25,18 @@ Antes de implementar, o Claude deve consultar `.ai/structure/agents/README.md` p
 
 Para CPF, CNPJ, CEP ou telefone, deve consultar também `.ai/structure/rules/standard-fields.md`.
 
+## Skills
+
+Atalhos em `.claude/skills/` que aplicam os templates e as regras de `.ai/` (a fonte continua sendo `.ai/`):
+
+- `nova-adr`: nova ADR numerada.
+- `nova-story`: especificação de funcionalidade em `docs/stories/`.
+- `relato-implementacao`: relato da entrega em `docs/implementation/`.
+- `auditoria`: auditoria de qualidade, segurança e cobertura com achados `AUD-NN`.
+- `migracao-dados`: migração de dados idempotente com testes.
+- `pipeline-ci-deploy`: CI, auditoria de dependências e deploy a partir dos templates.
+- `validar-estrutura`: roda e corrige o `scripts/validate-ai-structure.sh`.
+
 ## Regras obrigatórias
 
 Antes de alterar qualquer arquivo, o Claude deve:

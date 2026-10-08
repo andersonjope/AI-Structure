@@ -7,6 +7,8 @@
 #   3. Todo arquivo real em .ai/structure/agents/ precisa aparecer, como slug entre
 #      crases, no roster de AGENTS.md ("Papeis disponiveis") e de CLAUDE.md (time
 #      tecnico) — evita agente orfao, nunca listado como papel disponivel.
+#   4. Toda skill em .claude/skills/<nome>/SKILL.md precisa ter frontmatter com
+#      `name` igual ao diretorio e `description` preenchida.
 #
 # Uso: scripts/validate-ai-structure.sh
 # Saida: exit 0 se tudo ok, exit 1 se encontrar qualquer inconsistencia.
@@ -98,6 +100,34 @@ done
 if [ -n "$orphans" ]; then
   echo "FALHA: agentes sem entrada no roster de algum entry point:"
   echo "$orphans" | sed '/^$/d' | sed 's/^/  - /'
+  status=1
+else
+  echo "OK"
+fi
+
+echo
+echo "== 4. Skills em .claude/skills =="
+bad_skills=""
+if [ -d .claude/skills ]; then
+  for dir in .claude/skills/*/; do
+    [ -d "$dir" ] || continue
+    skill="$(basename "$dir")"
+    file="${dir}SKILL.md"
+    if [ ! -f "$file" ]; then
+      bad_skills="${bad_skills}${skill}: falta SKILL.md"$'\n'
+      continue
+    fi
+    front="$(awk 'NR==1 && $0!="---"{exit} NR>1 && $0=="---"{exit} NR>1{print}' "$file")"
+    name="$(printf '%s\n' "$front" | sed -n 's/^name:[[:space:]]*//p' | head -1)"
+    desc="$(printf '%s\n' "$front" | sed -n 's/^description:[[:space:]]*//p' | head -1)"
+    [ "$name" = "$skill" ] || bad_skills="${bad_skills}${skill}: frontmatter 'name' (\"${name}\") diferente do diretorio"$'\n'
+    [ -n "$desc" ] || bad_skills="${bad_skills}${skill}: frontmatter sem 'description'"$'\n'
+  done
+fi
+
+if [ -n "$bad_skills" ]; then
+  echo "FALHA: skills invalidas:"
+  echo "$bad_skills" | sed '/^$/d' | sed 's/^/  - /'
   status=1
 else
   echo "OK"

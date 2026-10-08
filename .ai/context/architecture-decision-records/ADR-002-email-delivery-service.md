@@ -1,3 +1,4 @@
+<!-- TEMPLATE:EXEMPLO -->
 # ADR-002 - Servico independente de entrega de e-mail
 
 > **Exemplo ilustrativo.** Este é um ADR real de um projeto de referência

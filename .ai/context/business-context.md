@@ -1,3 +1,4 @@
+<!-- TEMPLATE:EXEMPLO -->
 # Business Context
 
 > **Exemplo ilustrativo.** Este arquivo mostra o contexto de negócio real de

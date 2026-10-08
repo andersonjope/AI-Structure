@@ -48,6 +48,10 @@ template para um projeto novo (ver `README.md` > "Como usar este repositório
 para iniciar um novo projeto"), substitua esse conteúdo pelo contexto real do
 seu produto e remova os avisos.
 
+O mapa de cada escolha de projeto (backend, frontend, banco, deploy) para os arquivos que ficam, saem ou mudam está em
+`.ai/structure/stacks.md`; as escolhas feitas são registradas em `.ai/project.md`. Os arquivos que ainda são exemplo ou
+esqueleto do template têm o marcador `<!-- TEMPLATE:EXEMPLO -->` ou `<!-- TEMPLATE:ESQUELETO -->`.
+
 Ao usar esta estrutura como base para outro projeto:
 
 1. Substituir `.ai/context/` (business-context, bounded-contexts, ubiquitous-language, integration-map, ADRs reais) antes de implementar funcionalidades.

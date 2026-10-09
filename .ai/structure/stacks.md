@@ -242,8 +242,8 @@ Atualizar estas linhas junto com as seções acima.
 TERMOS backend=nestjs :: spring|junit|mockito|assertj|pom\.xml|\bmaven\b|\bjava\b|\.java\b|\bmvn\b|jackson
 TERMOS backend=spring-boot :: nestjs|@nestjs|nest\.js|class-validator|ts-jest|mongoose
 TERMOS backend=nenhum :: spring|junit|mockito|assertj|pom\.xml|\bmaven\b|\bjava\b|\.java\b|\bmvn\b|jackson|nestjs|@nestjs|class-validator|mongoose
-TERMOS frontend=nenhum :: ionic|mobile-app|angular
-TERMOS frontend=angular :: ionic|ion-
+TERMOS frontend=nenhum :: ionic|\bmobile\b|angular
+TERMOS frontend=angular :: ionic|ion-|\bmobile\b
 TERMOS estilo=monolito-modular :: microservice|microsservi
 TERMOS banco=outro :: mongo
 TERMOS exemplo=sempre :: agendahub|(identity|company|client|catalog|order|scheduling|email)[-_ ]service|(identity|company|client|catalog|order|scheduling)_mongodb

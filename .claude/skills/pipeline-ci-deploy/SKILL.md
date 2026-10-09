@@ -25,7 +25,7 @@ Modelos:
    - `infra/deploy/deploy-remote.sh`, `update-remote.sh` e `README.md`.
    Os scripts devem sair executáveis (`chmod +x`).
 5. **Gate de cobertura**: confirmar que o limite está na ferramenta de teste do projeto; se não está, propor a configuração (não baixar nem inventar limite sem registrar).
-6. **Validar sem executar o deploy**: sintaxe YAML, `bash -n` nos scripts, `docker compose -f infra/docker-compose.prod.yml config`, nenhum placeholder `<...>` restante (`grep -rn '<[A-Z_]*>' .github infra`).
+6. **Validar sem executar o deploy**: sintaxe YAML, `bash -n` nos scripts, `docker compose -f infra/docker-compose.prod.yml config -q` (o compose usa `env_file: .env`: criar um `.env` temporário copiando `infra/.env.prod.example`, validar e **apagá-lo**, com `IMAGE_REGISTRY` definido), nenhum placeholder `<...>` restante (`grep -rn '<[A-Z_]*>' .github infra`).
 7. Informar os **secrets** que o usuário precisa cadastrar no ambiente `production` e que o primeiro deploy falhará de propósito até o `.env` da VPS ser preenchido. Recomendar validar com `workflow_dispatch` e testar o rollback com health check quebrado.
 8. Se divergir do padrão (outro registry, Kubernetes), sugerir a skill `nova-adr`.
 

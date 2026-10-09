@@ -191,7 +191,7 @@ O nome do serviço no compose deve coincidir com o sufixo da imagem (`<PROJETO>-
 
 ## Runbook: `infra/deploy/README.md`
 
-Copiar a estrutura abaixo e preencher com os dados reais do projeto.
+Copiar a estrutura abaixo (o bloco já começa com o título `# Deploy na VPS`; não acrescentar outro) e preencher com os dados reais do projeto.
 
 ```markdown
 # Deploy na VPS

@@ -26,6 +26,19 @@ cd "$repo_root"
 
 status=0
 
+# Lista os arquivos do projeto (separados por NUL), sem dependencias e sem saida de build:
+# em repositorio git, os versionados e os nao versionados que nao estao no .gitignore
+# (node_modules, target, dist, .env ficam de fora); fora do git, uma lista com exclusoes basicas.
+repo_files() {
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    git ls-files -z --cached --others --exclude-standard
+  else
+    find . -type f \
+      -not -path './.git/*' -not -path '*/node_modules/*' -not -path '*/target/*' \
+      -not -path '*/dist/*' -not -path '*/build/*' -not -path '*/coverage/*' -print0 | sed -z 's#^\./##'
+  fi
+}
+
 profile_status=""
 [ -f .ai/project.md ] && profile_status="$(sed -n 's/^status:[[:space:]]*\([a-z-]*\).*/\1/p' .ai/project.md | head -1)"
 link_exclude=""
@@ -35,7 +48,7 @@ echo "== 1. Links .ai/**/*.md =="
 missing_links=""
 while IFS= read -r path; do
   [ -f "$path" ] || missing_links="${missing_links}${path}"$'\n'
-done < <(grep -rohE --exclude-dir=.git --include='*.md' $link_exclude '\.ai/[A-Za-z0-9_./-]+\.md' . | sort -u)
+done < <(repo_files | grep -zE '\.md$' | { [ -n "$link_exclude" ] && grep -zvE '(^|/)stacks\.md$' || cat; } | xargs -0 grep -ohsE '\.ai/[A-Za-z0-9_./-]+\.md' | sort -u)
 
 if [ -n "$missing_links" ]; then
   echo "FALHA: referencias a arquivos .ai/*.md inexistentes:"
@@ -163,7 +176,7 @@ else
         [ -n "$(profile_get "$campo")" ] || profile_errors="${profile_errors}status inicializado, mas o campo '${campo}' esta vazio em .ai/project.md"$'\n'
       done
 
-      leftover="$(grep -rnE '^<!-- TEMPLATE:' --include='*.md' . || true)"
+      leftover="$(repo_files | grep -zE '\.md$' | xargs -0 grep -nHsE '^<!-- TEMPLATE:' || true)"
       [ -z "$leftover" ] || profile_errors="${profile_errors}restam marcadores de template:"$'\n'"${leftover}"$'\n'
 
       # Termos de stack nao escolhida (linhas TERMOS/EXCLUIR de stacks.md).
@@ -186,11 +199,11 @@ else
           fi
           [ "$aplica" -eq 1 ] || continue
 
-          hits="$(grep -rIniE --exclude-dir=.git "$regex" . 2>/dev/null | grep -v 'ok-stack' || true)"
+          hits="$(repo_files | xargs -0 grep -IHniEs "$regex" 2>/dev/null | grep -v 'ok-stack' || true)"
           if [ -n "$excludes" ] && [ -n "$hits" ]; then
             while IFS= read -r ex; do
               [ -z "$ex" ] && continue
-              hits="$(printf '%s\n' "$hits" | grep -vF "./${ex}" || true)"
+              hits="$(printf '%s\n' "$hits" | awk -v p="$ex" 'index($0,p)!=1' || true)"
             done <<< "$excludes"
           fi
           if [ -n "$hits" ]; then

@@ -7,6 +7,14 @@
 #   3. Todo arquivo real em .ai/structure/agents/ precisa aparecer, como slug entre
 #      crases, no roster de AGENTS.md ("Papeis disponiveis") e de CLAUDE.md (time
 #      tecnico) — evita agente orfao, nunca listado como papel disponivel.
+#   4. Toda skill em .claude/skills/<nome>/SKILL.md precisa ter frontmatter com
+#      `name` igual ao diretorio e `description` preenchida.
+#   5. Perfil do projeto (.ai/project.md): `status` precisa ser um valor valido; com
+#      `status: inicializado`, os campos estilo/backend/frontend/banco precisam estar
+#      preenchidos, nenhum marcador `<!-- TEMPLATE:... -->` pode restar e nenhum termo
+#      de stack nao escolhida (linhas TERMOS de .ai/structure/stacks.md) pode restar.
+#      Com `inicializado`, o proprio catalogo stacks.md sai da checagem 1 (cita arquivos
+#      removidos de proposito).
 #
 # Uso: scripts/validate-ai-structure.sh
 # Saida: exit 0 se tudo ok, exit 1 se encontrar qualquer inconsistencia.
@@ -18,11 +26,16 @@ cd "$repo_root"
 
 status=0
 
+profile_status=""
+[ -f .ai/project.md ] && profile_status="$(sed -n 's/^status:[[:space:]]*\([a-z-]*\).*/\1/p' .ai/project.md | head -1)"
+link_exclude=""
+[ "$profile_status" = "inicializado" ] && link_exclude="--exclude=stacks.md"
+
 echo "== 1. Links .ai/**/*.md =="
 missing_links=""
 while IFS= read -r path; do
   [ -f "$path" ] || missing_links="${missing_links}${path}"$'\n'
-done < <(grep -rohE '\.ai/[A-Za-z0-9_./-]+\.md' --include='*.md' . | sort -u)
+done < <(grep -rohE --exclude-dir=.git --include='*.md' $link_exclude '\.ai/[A-Za-z0-9_./-]+\.md' . | sort -u)
 
 if [ -n "$missing_links" ]; then
   echo "FALHA: referencias a arquivos .ai/*.md inexistentes:"
@@ -98,6 +111,103 @@ done
 if [ -n "$orphans" ]; then
   echo "FALHA: agentes sem entrada no roster de algum entry point:"
   echo "$orphans" | sed '/^$/d' | sed 's/^/  - /'
+  status=1
+else
+  echo "OK"
+fi
+
+echo
+echo "== 4. Skills em .claude/skills =="
+bad_skills=""
+if [ -d .claude/skills ]; then
+  for dir in .claude/skills/*/; do
+    [ -d "$dir" ] || continue
+    skill="$(basename "$dir")"
+    file="${dir}SKILL.md"
+    if [ ! -f "$file" ]; then
+      bad_skills="${bad_skills}${skill}: falta SKILL.md"$'\n'
+      continue
+    fi
+    front="$(awk 'NR==1 && $0!="---"{exit} NR>1 && $0=="---"{exit} NR>1{print}' "$file")"
+    name="$(printf '%s\n' "$front" | sed -n 's/^name:[[:space:]]*//p' | head -1)"
+    desc="$(printf '%s\n' "$front" | sed -n 's/^description:[[:space:]]*//p' | head -1)"
+    [ "$name" = "$skill" ] || bad_skills="${bad_skills}${skill}: frontmatter 'name' (\"${name}\") diferente do diretorio"$'\n'
+    [ -n "$desc" ] || bad_skills="${bad_skills}${skill}: frontmatter sem 'description'"$'\n'
+  done
+fi
+
+if [ -n "$bad_skills" ]; then
+  echo "FALHA: skills invalidas:"
+  echo "$bad_skills" | sed '/^$/d' | sed 's/^/  - /'
+  status=1
+else
+  echo "OK"
+fi
+
+echo
+echo "== 5. Perfil do projeto (.ai/project.md) =="
+profile_errors=""
+
+# Valor de um campo do manifesto (primeira palavra, sem comentario).
+profile_get() {
+  sed -n "s/^[[:space:]]*$1:[[:space:]]*\([^[:space:]#]*\).*/\1/p" .ai/project.md | head -1
+}
+
+if [ ! -f .ai/project.md ]; then
+  profile_errors="${profile_errors}.ai/project.md ausente"$'\n'
+else
+  case "$profile_status" in
+    nao-inicializado|em-andamento) ;;
+    inicializado)
+      for campo in estilo backend frontend banco; do
+        [ -n "$(profile_get "$campo")" ] || profile_errors="${profile_errors}status inicializado, mas o campo '${campo}' esta vazio em .ai/project.md"$'\n'
+      done
+
+      leftover="$(grep -rnE '^<!-- TEMPLATE:' --include='*.md' . || true)"
+      [ -z "$leftover" ] || profile_errors="${profile_errors}restam marcadores de template:"$'\n'"${leftover}"$'\n'
+
+      # Termos de stack nao escolhida (linhas TERMOS/EXCLUIR de stacks.md).
+      catalog=".ai/structure/stacks.md"
+      if [ -f "$catalog" ]; then
+        excludes="$(sed -n 's/^EXCLUIR[[:space:]]*//p' "$catalog")"
+        while IFS= read -r rule; do
+          [ -z "$rule" ] && continue
+          spec="${rule#TERMOS }"
+          chave="${spec%%=*}"
+          resto="${spec#*=}"
+          valor="${resto%% :: *}"
+          regex="${resto#* :: }"
+          atual=""
+          [ "$chave" != "exemplo" ] && atual="$(profile_get "$chave")"
+          aplica=0
+          if [ "$chave" = "exemplo" ] && [ "$valor" = "sempre" ]; then aplica=1
+          elif [ -n "$atual" ] && [ "$atual" = "$valor" ]; then aplica=1
+          elif [ "$valor" = "outro" ] && [[ "$atual" == outro* ]]; then aplica=1
+          fi
+          [ "$aplica" -eq 1 ] || continue
+
+          hits="$(grep -rIniE --exclude-dir=.git "$regex" . 2>/dev/null | grep -v 'ok-stack' || true)"
+          if [ -n "$excludes" ] && [ -n "$hits" ]; then
+            while IFS= read -r ex; do
+              [ -z "$ex" ] && continue
+              hits="$(printf '%s\n' "$hits" | grep -vF "./${ex}" || true)"
+            done <<< "$excludes"
+          fi
+          if [ -n "$hits" ]; then
+            total="$(printf '%s\n' "$hits" | sed '/^$/d' | wc -l)"
+            arquivos="$(printf '%s\n' "$hits" | cut -d: -f1 | sort -u | wc -l)"
+            profile_errors="${profile_errors}termos de '${chave}=${valor}' ainda presentes (${total} ocorrencias em ${arquivos} arquivos; padrao: ${regex}):"$'\n'"$(printf '%s\n' "$hits" | cut -d: -f1,2 | head -15)"$'\n'
+          fi
+        done < <(grep '^TERMOS ' "$catalog")
+      fi
+      ;;
+    *) profile_errors="${profile_errors}status invalido: \"${profile_status}\" (use nao-inicializado, em-andamento ou inicializado)"$'\n' ;;
+  esac
+fi
+
+if [ -n "$profile_errors" ]; then
+  echo "FALHA: perfil do projeto inconsistente:"
+  echo "$profile_errors" | sed '/^$/d' | sed 's/^/  - /'
   status=1
 else
   echo "OK"

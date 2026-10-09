@@ -1,3 +1,4 @@
+<!-- TEMPLATE:ESQUELETO -->
 # Backend Reference: Microservice Hexagonal ("Item Service")
 
 Este documento é a referência mínima de um microservice Java/Spring Boot seguindo

@@ -1,3 +1,4 @@
+<!-- TEMPLATE:ESQUELETO -->
 # Variaveis de Ambiente
 
 Este documento e a referencia de manutencao das variaveis dinamicas do projeto.

@@ -1,0 +1,25 @@
+# Contexto de build na raiz do monorepo: exclui o que não entra na imagem.
+.git/
+.github/
+.ai/
+.claude/
+.codex/
+docs/
+infra/
+node_modules/
+**/node_modules/
+target/
+**/target/
+dist/
+**/dist/
+www/
+**/www/
+.angular/
+coverage/
+**/coverage/
+*.md
+*.log
+.env
+**/.env
+*.env
+!*.env.example

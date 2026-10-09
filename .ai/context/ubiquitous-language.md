@@ -1,3 +1,4 @@
+<!-- TEMPLATE:EXEMPLO -->
 # Ubiquitous Language
 
 > **Exemplo ilustrativo.** Este glossário é o real de um projeto de

@@ -1,3 +1,4 @@
+<!-- TEMPLATE:ESQUELETO -->
 # Mobile Reference: Feature Ionic Angular ("Items")
 
 Este documento é a referência mínima de uma feature Ionic Angular seguindo

@@ -29,6 +29,7 @@ Antes de atuar, leia `.ai/structure/agents/README.md` e aplique o checklist do `
 - `.ai/structure/templates/microservice-template.md`, seção de dados próprios.
 - `.ai/structure/templates/test-plan-template.md`, para persistência e queries críticas.
 - `.ai/structure/templates/adr-template.md`, quando a modelagem impactar arquitetura ou migração.
+- `.ai/structure/templates/data-migration-template.md`, ao migrar ou corrigir dados existentes.
 
 ## Saída esperada
 

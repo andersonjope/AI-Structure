@@ -1,3 +1,4 @@
+<!-- TEMPLATE:EXEMPLO -->
 # ADR-001 - API Gateway autonomo na plataforma backend
 
 > **Exemplo ilustrativo.** Este é um ADR real de um projeto de referência

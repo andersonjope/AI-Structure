@@ -1,3 +1,4 @@
+<!-- TEMPLATE:EXEMPLO -->
 # Bounded Contexts
 
 > **Exemplo ilustrativo.** Estes bounded contexts são os reais de um projeto

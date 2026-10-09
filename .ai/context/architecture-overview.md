@@ -1,3 +1,4 @@
+<!-- TEMPLATE:EXEMPLO -->
 # Architecture Overview
 
 ## Visao geral

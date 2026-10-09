@@ -1,3 +1,4 @@
+<!-- TEMPLATE:EXEMPLO -->
 # Integration Map
 
 > **Exemplo ilustrativo.** Este mapa de integrações é o real de um projeto de

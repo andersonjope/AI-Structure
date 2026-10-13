@@ -258,6 +258,7 @@ EXCLUIR .ai/structure/templates/deploy-workflow-template.md
 EXCLUIR .ai/structure/templates/deploy-scripts-template.md
 EXCLUIR .github/workflows/
 EXCLUIR .claude/
+EXCLUIR .agents/
 EXCLUIR scripts/
 EXCLUIR .gitignore
 EXCLUIR .dockerignore

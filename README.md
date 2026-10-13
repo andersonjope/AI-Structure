@@ -121,6 +121,46 @@ Em repositório git ele ignora `node_modules`, `target`, `dist` e arquivos no `.
 
 ## Estrutura principal
 
+```mermaid
+flowchart TD
+    CLAUDE["CLAUDE.md"]
+    AGENTS["AGENTS.md"]
+    COPILOT[".github/copilot-instructions.md"]
+
+    AI[".ai/ — fonte única de verdade"]
+
+    CLAUDE --> AI
+    AGENTS --> AI
+    COPILOT --> AI
+
+    subgraph ai [".ai/"]
+        CONTEXT["context<br/>negócio e ADRs"]
+        RULES["structure/rules<br/>regras por tema"]
+        AGENTSDIR["structure/agents<br/>12 papéis"]
+        TEMPLATES["structure/templates<br/>modelos de artefatos"]
+    end
+
+    AI --> CONTEXT
+    AI --> RULES
+    AI --> AGENTSDIR
+    AI --> TEMPLATES
+
+    SKILLS["Skills<br/>.claude/skills e .agents/skills<br/>sync-skills.sh"]
+
+    CONTEXT --> SKILLS
+    RULES --> SKILLS
+    AGENTSDIR --> SKILLS
+    TEMPLATES --> SKILLS
+
+    subgraph fluxo ["Fluxo padrão de trabalho"]
+        direction LR
+        D["Diagnóstico"] --> P["Plano"] --> T["Testes (TDD)"] --> I["Implementar"] --> R["Revisão"]
+    end
+
+    SKILLS --> D
+    R --> DOD["Definition of Done"]
+```
+
 Convenção de pastas — neste repositório-base, `apps/` contém apenas READMEs de referência mínima; os diretórios reais de
 código só existem a partir do primeiro serviço/feature que o projeto criar:
 

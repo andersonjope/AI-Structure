@@ -8,6 +8,12 @@ O ponto de entrada do Codex é o arquivo `AGENTS.md` na raiz.
 
 As regras, agentes, templates e contexto arquitetural são compartilhados com Claude e GitHub Copilot em `.ai/` para evitar duplicação e divergência.
 
+## Skills
+
+O Codex lê as skills em `.agents/skills/<nome>/SKILL.md`. É uma cópia gerada de `.claude/skills/` (fonte única): não editar
+aqui; alterar em `.claude/skills/` e rodar `bash scripts/sync-skills.sh`. Chamar com `/skills` ou `$nome`
+(por exemplo, `$iniciar-projeto`, `$nova-adr`, `$validar-estrutura`).
+
 ## Organização compartilhada
 
 - `.ai/structure/rules/`: padrões técnicos obrigatórios.

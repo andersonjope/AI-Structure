@@ -1,83 +1,125 @@
 # AI Engineering Monorepo
 
-Estrutura base para trabalhar com Claude Code, Codex e GitHub Copilot no mesmo monorepo.
+Template de governança para desenvolvimento assistido por IA com Claude Code, Codex e GitHub Copilot no mesmo monorepo.
 
 ## Objetivo
 
-Este repositório é um **template de governança para desenvolvimento assistido
-por IA** (Claude Code, Codex, GitHub Copilot) em projetos de microservices
-Java/Spring Boot + MongoDB e app Ionic Angular. Ele centraliza agentes, regras
-técnicas, templates de artefato, contexto de arquitetura e uma referência
-mínima de código (`apps/`) para que um projeto novo comece com padrões
-consistentes, em vez de reconstruir essa base do zero a cada vez.
+Este repositório centraliza agentes, regras técnicas, templates de artefato, contexto de arquitetura, skills do Claude,
+um catálogo de stacks e um validador, para que um projeto novo comece com padrões consistentes em vez de reconstruir essa
+base a cada vez. Stacks cobertas hoje:
 
-O que este repositório fornece, em três camadas (detalhado em
-`.ai/README.md` > "Portabilidade para outros projetos"):
+- **Backend:** Java/Spring Boot ou NestJS (TypeScript), em microservices ou monólito modular.
+- **Frontend:** Ionic Angular, Angular (web) ou nenhum.
+- **Banco:** MongoDB.
+- **Entrega:** GitHub Actions, imagens no GHCR e deploy em VPS com Docker Compose.
 
-- **Universal**: papéis de agente, Definition of Done, templates de contrato/ADR, regras de segurança, teste e clean code — não muda entre projetos.
-- **Stack-specific**: regras de Spring Boot, MongoDB, Ionic Angular, Docker — muda se o projeto novo usar outra stack.
-- **Product-specific**: tudo em `.ai/context/` (negócio, bounded contexts, linguagem ubíqua, integrações, ADRs reais) — é sempre substituído a cada novo projeto.
+A base tem três camadas (detalhadas em `.ai/README.md`):
 
-## Como usar este repositório para iniciar um novo projeto
+- **Universal:** papéis de agente, Definition of Done, templates de contrato, ADR, documentação e pipeline, e regras de segurança, teste, clean code e CI — não mudam entre projetos.
+- **Stack-specific:** regras de Spring Boot, NestJS, MongoDB, Ionic, Angular e Docker — mudam conforme a stack escolhida.
+- **Product-specific:** `.ai/context/` (negócio, bounded contexts, linguagem ubíqua, integrações, ADRs) — sempre substituído a cada projeto.
 
-Este repositório funciona como base **via branch**, não via cópia manual de
-arquivos para outro lugar:
+## Iniciar um novo projeto
 
-1. A partir de `main` (que deve permanecer genérica e sempre atualizada), criar uma branch por projeto:
+O repositório funciona como base **via branch**, não por cópia manual:
+
+1. A partir da `main` (que permanece genérica), criar uma branch por projeto:
    ```bash
    git checkout -b projeto/<nome-do-projeto>
    ```
-2. Nessa branch, adaptar o que é específico do produto:
-   - Reescrever `.ai/context/` inteiro (contexto de negócio, bounded contexts, linguagem ubíqua, integrações, requisitos não funcionais, ADRs) para a realidade do novo projeto.
-   - Remover ou ajustar, em `.ai/structure/rules/`, as regras de stack que não se aplicam (ex.: remover `mongodb.md` se o projeto usar outro banco; remover `ionic.md`/`frontend-state.md` se não houver app mobile).
-   - Atualizar a seção "Estrutura principal" deste `README.md` e usar `apps/backend/README.md`/`apps/mobile-app/README.md` como esqueleto para o primeiro serviço e a primeira feature reais.
-   - Revisar `CLAUDE.md`/`AGENTS.md`/`.github/copilot-instructions.md` só se o time técnico ou o roteamento de agentes mudar — normalmente não precisam mudar.
-3. Rodar `scripts/validate-ai-structure.sh` depois de qualquer alteração e antes de abrir PR.
-4. Manter `main` como a base limpa: melhorias universais (novo agente, correção no validador, nova regra técnica de uso geral) entram primeiro em `main` e são trazidas para as branches de projeto por merge/rebase — nunca o caminho inverso.
+2. No Claude Code, rodar a skill **`/iniciar-projeto`**. Ela:
+   - entrevista você (produto, arquitetura e stack, entrega);
+   - registra as escolhas em `.ai/project.md`;
+   - mostra o plano (o que remover, reescrever, adaptar e gerar) e espera a sua aprovação;
+   - aplica o catálogo `.ai/structure/stacks.md`: contexto de negócio, regras, agentes, entradas de IA, READMEs, ambiente e pipeline;
+   - termina com o validador passando e um relatório de pendências.
+3. Sem a skill (ou com outra ferramenta), seguir `.ai/structure/stacks.md` à mão, seção por seção.
+4. Rodar `bash scripts/validate-ai-structure.sh` depois de qualquer alteração e antes de abrir PR.
+5. Manter a `main` como base limpa: melhorias universais (agente, regra, correção do validador) entram primeiro na `main` e são trazidas às branches de projeto por merge ou rebase — nunca o caminho inverso.
 
-Isso mantém um único lugar de verdade para a governança, em vez de cada
-projeto divergir de forma independente e nunca mais receber melhorias.
+### Catálogo, perfil e marcadores
+
+| Peça | Papel |
+|---|---|
+| `.ai/structure/stacks.md` | Para cada escolha (estilo, backend, frontend, banco, deploy), o que **mantém**, **remove**, **renomeia** e **adapta**; e a lista de termos residuais que o validador procura |
+| `.ai/project.md` | Manifesto das decisões do projeto (`status`, nome, estilo, stack, entrega, etapas aplicadas); lido pelas skills para não perguntar de novo |
+| `<!-- TEMPLATE:EXEMPLO -->` | Marca conteúdo de produto de exemplo que deve ser reescrito |
+| `<!-- TEMPLATE:ESQUELETO -->` | Marca referência de stack que deve ser adaptada ou removida |
+
+`status` em `.ai/project.md` vale `nao-inicializado`, `em-andamento` ou `inicializado`. Com `inicializado`, o validador exige
+os campos de stack preenchidos e falha se restarem marcadores `TEMPLATE:` ou termos de stack não escolhida.
+
+## Skills (Claude, Codex e Copilot)
+
+Atalhos que aplicam os templates e as regras de `.ai/` (a fonte continua sendo `.ai/`). O formato `SKILL.md` é o mesmo nas três
+ferramentas, cada uma lê de uma pasta:
+
+| Ferramenta | Pasta | Chamada |
+|---|---|---|
+| Claude Code | `.claude/skills/` (**fonte**) | `/nome` |
+| Codex | `.agents/skills/` | `/skills` ou `$nome` |
+| GitHub Copilot | `.agents/skills/` (também lê `.claude/skills/`) | `/skills` |
+
+`.agents/skills/` é uma cópia gerada: edite em `.claude/skills/` e rode `bash scripts/sync-skills.sh`. O validador falha se as
+duas divergirem.
+
+| Skill | Para quê |
+|---|---|
+| `iniciar-projeto` | Transforma o template em projeto (entrevista, `project.md`, aplica o catálogo) |
+| `nova-adr` | Nova ADR numerada em `.ai/context/architecture-decision-records/` |
+| `nova-story` | Especificação de funcionalidade em `docs/stories/` |
+| `relato-implementacao` | Relato da entrega em `docs/implementation/` |
+| `auditoria` | Auditoria de qualidade, segurança e cobertura com achados `AUD-NN` |
+| `migracao-dados` | Migração de dados idempotente, com testes contra banco real |
+| `pipeline-ci-deploy` | CI, auditoria de dependências e deploy a partir dos templates |
+| `validar-estrutura` | Roda e corrige o validador |
 
 ## Pontos de entrada
 
-- Claude Code: leia `CLAUDE.md`.
-- Codex: leia `AGENTS.md`.
-- GitHub Copilot: lê `.github/copilot-instructions.md` e instruções específicas em `.github/instructions/`.
+- Claude Code: `CLAUDE.md`.
+- Codex: `AGENTS.md`.
+- GitHub Copilot: `.github/copilot-instructions.md` e `.github/instructions/`.
 
 ## Governança compartilhada
 
-As regras, agentes, templates e contexto ficam centralizados em `.ai/` para evitar duplicação:
+Regras, agentes, templates e contexto ficam em `.ai/` para evitar duplicação:
 
-- `.ai/structure/rules/`: padrões técnicos obrigatórios.
-- `.ai/structure/agents/`: papéis especializados.
-- `.ai/structure/templates/`: modelos para artefatos recorrentes.
+- `.ai/structure/rules/`: padrões técnicos obrigatórios (arquitetura, DDD, TDD, testes com cobertura mínima, segurança, observabilidade, performance, API, MongoDB, Docker, CI, deploy, documentação e as regras de stack).
+- `.ai/structure/agents/`: papéis especializados e roteamento operacional.
+- `.ai/structure/templates/`: modelos de ADR, contrato REST e de evento, aggregate, use case, plano de teste, PR, story, relato de implementação, auditoria, migração de dados, CI, auditoria de dependências, deploy e scripts de deploy.
+- `.ai/structure/stacks.md` e `.ai/project.md`: catálogo de stacks e perfil do projeto.
 - `.ai/context/`: contexto de negócio e arquitetura.
-- `.github/copilot-instructions.md`: instruções gerais do Copilot.
-- `.github/instructions/`: instruções do Copilot por caminho.
+
+## Validador
+
+`bash scripts/validate-ai-structure.sh` (também roda no GitHub Actions por `validate-ai-structure.yml`) confere:
+
+1. Links `.ai/**/*.md` existentes.
+2. Slugs de agente das matrizes de roteamento.
+3. Agentes órfãos nos entry points.
+4. Frontmatter das skills (`name` igual ao diretório e `description` preenchida).
+5. Perfil do projeto: `status` válido e, com `inicializado`, campos preenchidos, sem marcadores `TEMPLATE:` e sem termos de stack não escolhida ou do produto de exemplo.
+6. `.agents/skills` idêntica a `.claude/skills` (cópia gerada por `scripts/sync-skills.sh`).
+
+Em repositório git ele ignora `node_modules`, `target`, `dist` e arquivos no `.gitignore`.
 
 ## Estrutura principal
 
-Convenção de pastas para código de aplicação — neste repositório-base, `apps/`
-contém apenas os READMEs de referência mínima; os diretórios reais de código
-(`src/`, `pom.xml` por serviço, `package.json` do app mobile) só existem a
-partir do primeiro serviço/feature real que o projeto criar:
+Convenção de pastas — neste repositório-base, `apps/` contém apenas READMEs de referência mínima; os diretórios reais de
+código só existem a partir do primeiro serviço/feature que o projeto criar:
 
-- `apps/backend/platform`: componentes de plataforma do backend (ex.: API Gateway).
-- `apps/backend/services/<service>`: um microservice Java Spring Boot por bounded context. Veja [`apps/backend/README.md`](apps/backend/README.md) para o esqueleto de referência ("Item Service").
-- `apps/backend/shared`: bibliotecas compartilhadas do backend, sem regra específica de um serviço.
-- `apps/mobile-app`: aplicativo Ionic Angular. Veja [`apps/mobile-app/README.md`](apps/mobile-app/README.md) para o esqueleto de referência (feature "Items").
-- `libs/frontend-common`: bibliotecas compartilhadas do frontend.
-- `infra`: infraestrutura local e deploy (`docker-compose.yml` local, `docker-compose.prod.yml`, `.env.prod.example`, `deploy/`).
+- `apps/backend/...`: backend. Veja [`apps/backend/README.md`](apps/backend/README.md) para o esqueleto de referência.
+- `apps/mobile-app`: aplicativo Ionic Angular. Veja [`apps/mobile-app/README.md`](apps/mobile-app/README.md).
+- `infra`: `docker-compose.yml` local, `docker-compose.prod.yml`, `.env.prod.example` e `deploy/` (scripts e runbook).
 - `docs`: documentação do projeto (`stories/`, `implementation/`, auditorias e `env/`), conforme `.ai/structure/rules/documentation.md`.
-- `.github/workflows`: workflows reais do projeto, criados a partir dos modelos em `.ai/structure/templates/` (CI, auditoria de dependências e deploy). Este repositório-base versiona apenas o `validate-ai-structure.yml`.
+- `.github/workflows`: workflows do projeto, criados a partir dos templates. O repositório-base versiona só o `validate-ai-structure.yml`.
+- `.claude/`: `settings.json` (permissões), `skills/` (fonte) e README. `.agents/skills/`: cópia das skills para Codex e Copilot.
 
-A lista de serviços e features reais de cada projeto fica em
-`.ai/context/bounded-contexts.md`, não aqui — esta seção descreve a
-convenção de pastas, não o inventário de um produto específico.
+A lista de serviços e features reais de cada projeto fica em `.ai/context/bounded-contexts.md`, não aqui.
 
 ## Pipeline (CI, auditoria e deploy)
 
-Modelos prontos para copiar e adaptar, com as regras em `.ai/structure/rules/ci.md` e `.ai/structure/rules/deploy.md`:
+Modelos para copiar e adaptar (ou gerar com a skill `pipeline-ci-deploy`), com as regras em `.ai/structure/rules/ci.md` e `.ai/structure/rules/deploy.md`:
 
 | Necessidade | Modelo |
 |---|---|
@@ -86,22 +128,32 @@ Modelos prontos para copiar e adaptar, com as regras em `.ai/structure/rules/ci.
 | Workflow de deploy | `.ai/structure/templates/deploy-workflow-template.md` |
 | Scripts de deploy e runbook | `.ai/structure/templates/deploy-scripts-template.md` |
 
+O deploy builda no runner, publica `latest` e `<sha>`, verifica a saúde na VPS e volta para a versão anterior se falhar.
+
 ## Documentação do projeto
 
-Story, relato de implementação, auditoria e migração de dados têm modelo próprio
-(`story-template.md`, `implementation-report-template.md`, `audit-report-template.md`,
-`data-migration-template.md`); ver `.ai/structure/rules/documentation.md`.
+Story, relato de implementação, auditoria e migração de dados têm modelo próprio (`story-template.md`,
+`implementation-report-template.md`, `audit-report-template.md`, `data-migration-template.md`); ver
+`.ai/structure/rules/documentation.md`.
+
+## Atualizar um projeto que já usa uma versão anterior
+
+1. Comparar o projeto com a base antiga e com a `main` atual (três vias) para saber o que ele customizou.
+2. Trazer o que é universal e novo (regras, templates, skills, validador, catálogo); **não** sobrescrever `.ai/context/`, as ADRs nem o que o projeto já adaptou.
+3. Preencher `.ai/project.md` com as escolhas reais e rodar o validador.
+4. Revisar o contexto contra o código e as ADRs (ver a skill `iniciar-projeto` e `.ai/structure/stacks.md`).
 
 ## Fluxo recomendado
 
-1. Leia o ponto de entrada do agente.
-2. Consulte as regras aplicáveis em `.ai/structure/rules/`.
-3. Consulte o contexto em `.ai/context/`.
-4. Use os papéis em `.ai/structure/agents/` para orientar implementação, revisão e arquitetura.
-5. Use TDD sempre que houver regra de negócio.
+1. Ler o ponto de entrada do agente.
+2. Consultar as regras aplicáveis em `.ai/structure/rules/`.
+3. Consultar o contexto em `.ai/context/`.
+4. Usar os papéis em `.ai/structure/agents/` para orientar implementação, revisão e arquitetura.
+5. Usar TDD sempre que houver regra de negócio.
+6. Validar com `bash scripts/validate-ai-structure.sh` ao alterar a governança.
 
-## Configuracao de ambiente
+## Configuração de ambiente
 
-- Template versionavel: `.env.example`.
-- Arquivo local com segredos reais: `.env` (nao versionar).
-- Referencia de manutencao: `docs/env/README.md`.
+- Modelo versionável: `.env.example`.
+- Arquivo local com segredos reais: `.env` (não versionar).
+- Referência de manutenção: `docs/env/README.md`.

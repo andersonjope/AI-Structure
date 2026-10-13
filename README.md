@@ -1,6 +1,12 @@
 # AI Engineering Monorepo
 
-Template de governança para desenvolvimento assistido por IA com Claude Code, Codex e GitHub Copilot no mesmo monorepo.
+Template de governança para desenvolvimento assistido por IA com **Claude Code**, **OpenAI Codex** e **GitHub Copilot** no mesmo
+monorepo: agentes, regras, templates, skills, catálogo de stacks e validador, prontos para Spring Boot ou NestJS, Ionic Angular
+ou Angular, MongoDB, Docker e GitHub Actions.
+
+`#claude-code` `#codex` `#github-copilot` `#ai-agents` `#agent-skills` `#agents-md` `#ai-coding` `#ai-governance`
+`#prompt-engineering` `#template` `#monorepo` `#spring-boot` `#nestjs` `#ionic` `#angular` `#mongodb` `#ddd`
+`#clean-architecture` `#tdd` `#microservices` `#docker` `#github-actions` `#devops` `#adr`
 
 ## Objetivo
 
@@ -74,11 +80,21 @@ duas divergirem.
 | `pipeline-ci-deploy` | CI, auditoria de dependências e deploy a partir dos templates |
 | `validar-estrutura` | Roda e corrige o validador |
 
-## Pontos de entrada
+## Ferramentas suportadas
 
-- Claude Code: `CLAUDE.md`.
-- Codex: `AGENTS.md`.
-- GitHub Copilot: `.github/copilot-instructions.md` e `.github/instructions/`.
+As três ferramentas seguem as mesmas regras, agentes, templates e contexto em `.ai/`; cada uma tem só o seu ponto de entrada.
+
+| Ferramenta | Ponto de entrada | Instruções extras | Skills | Configuração |
+|---|---|---|---|---|
+| **Claude Code** | `CLAUDE.md` | — | `.claude/skills/` (fonte), chamadas por `/nome` | `.claude/settings.json` (permissões) e `.claude/README.md` |
+| **OpenAI Codex** | `AGENTS.md` | — | `.agents/skills/`, chamadas por `/skills` ou `$nome` | `.codex/README.md` |
+| **GitHub Copilot** | `.github/copilot-instructions.md` | `.github/instructions/*.instructions.md` (por caminho) | `.agents/skills/` (também lê `.claude/skills/`), chamadas por `/skills` | `.github/` |
+
+Como começar em cada uma:
+
+- **Claude Code:** abrir o repositório e rodar `/iniciar-projeto` (projeto novo) ou qualquer skill listada abaixo.
+- **Codex:** abrir o repositório (lê o `AGENTS.md` sozinho) e chamar as skills por `$iniciar-projeto`, `$nova-adr` etc.
+- **Copilot:** as instruções são aplicadas automaticamente; as skills ficam disponíveis no agente do VS Code, CLI e cloud agent.
 
 ## Governança compartilhada
 
@@ -157,3 +173,11 @@ Story, relato de implementação, auditoria e migração de dados têm modelo pr
 - Modelo versionável: `.env.example`.
 - Arquivo local com segredos reais: `.env` (não versionar).
 - Referência de manutenção: `docs/env/README.md`.
+
+## Palavras-chave
+
+`#claude-code` `#codex` `#openai-codex` `#github-copilot` `#copilot-instructions` `#agents-md` `#claude-md` `#agent-skills`
+`#ai-agents` `#agentic-coding` `#ai-assisted-development` `#ai-governance` `#ai-engineering` `#llm` `#template`
+`#monorepo` `#spring-boot` `#java` `#nestjs` `#typescript` `#ionic` `#angular` `#mongodb` `#ddd`
+`#clean-architecture` `#hexagonal-architecture` `#tdd` `#microservices` `#modular-monolith` `#docker`
+`#github-actions` `#ci-cd` `#devops` `#adr` `#openapi` `#pt-br`

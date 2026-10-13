@@ -30,7 +30,7 @@ e não duplica trabalho.
 
 ## Passo 1: entrevista
 
-Usar `AskUserQuestion` em rodadas curtas (até 4 perguntas por vez). Sempre inferir antes de perguntar (arquivos existentes, `git remote`, lockfiles).
+Perguntar ao usuário em rodadas curtas (até 4 perguntas por vez; use a ferramenta de perguntas com opções da sua ferramenta, se houver, ou pergunte no chat). Sempre inferir antes de perguntar (arquivos existentes, `git remote`, lockfiles).
 
 **Rodada A: produto**
 - Nome do projeto (slug em kebab-case), problema que resolve e para quem.

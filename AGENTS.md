@@ -38,6 +38,19 @@ Infraestrutura:
 - `infra`: Docker, Kubernetes, Nginx e observabilidade.
 - Artefatos Docker de microservices ficam em `apps/backend/services/<service>/infra/`.
 
+## Skills
+
+Skills em `.agents/skills/<nome>/SKILL.md` (cópia gerada de `.claude/skills/`; não editar aqui, rodar `bash scripts/sync-skills.sh`). Chamar com `/skills` ou `$nome`:
+
+- `nova-adr`: nova ADR numerada.
+- `nova-story`: especificação de funcionalidade em `docs/stories/`.
+- `relato-implementacao`: relato da entrega em `docs/implementation/`.
+- `auditoria`: auditoria de qualidade, segurança e cobertura (achados `AUD-NN`).
+- `migracao-dados`: migração de dados idempotente com testes.
+- `pipeline-ci-deploy`: CI, auditoria de dependências e deploy a partir dos templates.
+- `iniciar-projeto`: transforma o template em projeto (usar uma vez, no início).
+- `validar-estrutura`: roda e corrige o `scripts/validate-ai-structure.sh`.
+
 ## Regras obrigatórias
 
 Para qualquer tarefa relevante:

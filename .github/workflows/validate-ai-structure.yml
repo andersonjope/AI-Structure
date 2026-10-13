@@ -5,6 +5,8 @@ on:
     paths:
       - ".ai/**"
       - ".claude/skills/**"
+      - ".agents/skills/**"
+      - "scripts/sync-skills.sh"
       - "CLAUDE.md"
       - "AGENTS.md"
       - ".github/copilot-instructions.md"
@@ -15,6 +17,8 @@ on:
     paths:
       - ".ai/**"
       - ".claude/skills/**"
+      - ".agents/skills/**"
+      - "scripts/sync-skills.sh"
       - "CLAUDE.md"
       - "AGENTS.md"
       - ".github/copilot-instructions.md"

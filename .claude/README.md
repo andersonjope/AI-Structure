@@ -38,4 +38,4 @@ Use refactor-guard antes de alterar este módulo.
 `.claude/skills/<nome>/SKILL.md` define atalhos para tarefas recorrentes (inicialização do projeto, ADR, story, relato de implementação,
 auditoria, migração de dados, pipeline de CI/deploy e validação da estrutura). Cada skill aponta para as
 regras e os templates de `.ai/`, sem duplicar conteúdo. O validador confere o frontmatter (`name` igual ao
-diretório e `description` preenchida). Codex e Copilot não leem esta pasta; usam as regras e templates de `.ai/` diretamente.
+diretório e `description` preenchida). Esta pasta é a **fonte** das skills. Codex e GitHub Copilot leem `.agents/skills/`, uma cópia gerada por `bash scripts/sync-skills.sh`; o validador falha se as duas divergirem. Edite sempre em `.claude/skills/` e depois sincronize.

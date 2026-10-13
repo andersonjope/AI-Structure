@@ -27,7 +27,7 @@ Para CPF, CNPJ, CEP ou telefone, deve consultar também `.ai/structure/rules/sta
 
 ## Skills
 
-Atalhos em `.claude/skills/` que aplicam os templates e as regras de `.ai/` (a fonte continua sendo `.ai/`):
+Atalhos em `.claude/skills/` que aplicam os templates e as regras de `.ai/` (a fonte continua sendo `.ai/`). Codex e Copilot leem a cópia em `.agents/skills/`; após editar uma skill, rodar `bash scripts/sync-skills.sh`:
 
 - `nova-adr`: nova ADR numerada.
 - `nova-story`: especificação de funcionalidade em `docs/stories/`.

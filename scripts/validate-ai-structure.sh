@@ -9,6 +9,8 @@
 #      tecnico) — evita agente orfao, nunca listado como papel disponivel.
 #   4. Toda skill em .claude/skills/<nome>/SKILL.md precisa ter frontmatter com
 #      `name` igual ao diretorio e `description` preenchida.
+#   6. .agents/skills (lida por Codex e Copilot) precisa ser copia fiel de .claude/skills
+#      (gerada por scripts/sync-skills.sh).
 #   5. Perfil do projeto (.ai/project.md): `status` precisa ser um valor valido; com
 #      `status: inicializado`, os campos estilo/backend/frontend/banco precisam estar
 #      preenchidos, nenhum marcador `<!-- TEMPLATE:... -->` pode restar e nenhum termo
@@ -222,6 +224,19 @@ if [ -n "$profile_errors" ]; then
   echo "FALHA: perfil do projeto inconsistente:"
   echo "$profile_errors" | sed '/^$/d' | sed 's/^/  - /'
   status=1
+else
+  echo "OK"
+fi
+
+echo
+echo "== 6. Skills sincronizadas (.claude/skills x .agents/skills) =="
+if [ -d .claude/skills ]; then
+  if bash scripts/sync-skills.sh --check; then
+    echo "OK"
+  else
+    echo "FALHA: .agents/skills difere de .claude/skills. Rode: bash scripts/sync-skills.sh"
+    status=1
+  fi
 else
   echo "OK"
 fi

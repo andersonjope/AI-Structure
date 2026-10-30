@@ -37,6 +37,7 @@ Atalhos em `.claude/skills/` que aplicam os templates e as regras de `.ai/` (a f
 - `pipeline-ci-deploy`: CI, auditoria de dependências e deploy a partir dos templates.
 - `iniciar-projeto`: transforma o template em projeto (entrevista, `.ai/project.md`, aplica `.ai/structure/stacks.md`). Usar uma vez, no início.
 - `validar-estrutura`: roda e corrige o `scripts/validate-ai-structure.sh`.
+- `sugerir-funcionalidades`: valida o projeto, pesquisa o mercado e propõe funcionalidades priorizadas em `docs/produto/`.
 
 ## Regras obrigatórias
 

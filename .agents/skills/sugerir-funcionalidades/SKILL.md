@@ -7,11 +7,11 @@ description: Valida o projeto (estado real, lacunas, aderência às regras), pes
 
 Entrega um relatório em `docs/produto/` com o diagnóstico do projeto, o panorama de mercado e funcionalidades priorizadas. **Só sugere; não implementa.** Cada sugestão aprovada vira `nova-story` (e `nova-adr` se houver decisão arquitetural).
 
-Regras e contexto: `.ai/project.md`, `.ai/context/` (negócio, bounded contexts, ADRs, requisitos não funcionais), `.ai/structure/rules/`, `.ai/structure/agents/README.md`.
+Regras e contexto: manifesto do projeto (`project.md` dentro de `.ai/`, quando existir), `.ai/context/` (negócio, bounded contexts, ADRs, requisitos não funcionais), `.ai/structure/rules/`, `.ai/structure/agents/README.md`.
 
 ## Passos
 
-1. **Entender o produto.** Ler `.ai/project.md` e `.ai/context/business-context.md`. Registrar: problema, público, estilo de arquitetura, stack e `status`. Se `status: nao-inicializado`, o produto analisado é o próprio template (governança de IA para monorepo) e o público são times que o adotam. Contexto de negócio ausente: perguntar ao usuário em vez de inventar.
+1. **Entender o produto.** Ler o manifesto `project.md` dentro de `.ai/` (se existir) e `.ai/context/business-context.md`. Registrar: problema, público, estilo de arquitetura, stack e `status`. Sem manifesto, deduzir do `CLAUDE.md`, do README e do código, e declarar a premissa. Se `status: nao-inicializado`, o produto analisado é o próprio template (governança de IA para monorepo) e o público são times que o adotam. Contexto de negócio ausente: perguntar ao usuário em vez de inventar.
 2. **Validar o estado real (medir, não supor).** Aplicar `code-reviewer`, `microservice-architect` e `refactor-guard`:
    - inventário do que existe (apps, serviços, skills, regras, templates, pipeline), por leitura do repositório;
    - `bash scripts/validate-ai-structure.sh` e, se houver código, testes/lint/build, registrando o resultado real (ou "não executado" com o motivo);

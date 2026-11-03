@@ -29,7 +29,7 @@ For CPF, CNPJ, CEP, or phone fields, also follow `.ai/structure/rules/standard-f
 
 ## Skills
 
-Agent skills live in `.agents/skills/<name>/SKILL.md` (a generated copy of `.claude/skills/`; do not edit here, run `bash scripts/sync-skills.sh`). Available: `nova-adr`, `nova-story`, `relato-implementacao`, `auditoria`, `migracao-dados`, `pipeline-ci-deploy`, `iniciar-projeto` and `validar-estrutura`. They apply the templates and rules in `.ai/`.
+Agent skills live in `.agents/skills/<name>/SKILL.md` (a generated copy of `.claude/skills/`; do not edit here, run `bash scripts/sync-skills.sh`). Available: `nova-adr`, `nova-story`, `relato-implementacao`, `auditoria`, `migracao-dados`, `pipeline-ci-deploy`, `iniciar-projeto`, `validar-estrutura` and `sugerir-funcionalidades`. They apply the templates and rules in `.ai/`.
 
 ## Engineering Rules
 

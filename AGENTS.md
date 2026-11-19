@@ -51,6 +51,7 @@ Skills em `.agents/skills/<nome>/SKILL.md` (cópia gerada de `.claude/skills/`; 
 - `iniciar-projeto`: transforma o template em projeto (usar uma vez, no início).
 - `validar-estrutura`: roda e corrige o `scripts/validate-ai-structure.sh`.
 - `sugerir-funcionalidades`: valida o projeto, pesquisa o mercado e propõe funcionalidades priorizadas em `docs/produto/`.
+- `versionamento-github`: branch por demanda, commit, push, PR para a `develop` e promoção da `develop` para a `main`.
 
 ## Regras obrigatórias
 

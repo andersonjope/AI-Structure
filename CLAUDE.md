@@ -38,6 +38,7 @@ Atalhos em `.claude/skills/` que aplicam os templates e as regras de `.ai/` (a f
 - `iniciar-projeto`: transforma o template em projeto (entrevista, `.ai/project.md`, aplica `.ai/structure/stacks.md`). Usar uma vez, no início.
 - `validar-estrutura`: roda e corrige o `scripts/validate-ai-structure.sh`.
 - `sugerir-funcionalidades`: valida o projeto, pesquisa o mercado e propõe funcionalidades priorizadas em `docs/produto/`.
+- `versionamento-github`: branch por demanda, commit, push, PR para a `develop` e promoção da `develop` para a `main`.
 
 ## Regras obrigatórias
 

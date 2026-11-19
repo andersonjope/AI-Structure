@@ -80,6 +80,7 @@ duas divergirem.
 | `pipeline-ci-deploy` | CI, auditoria de dependências e deploy a partir dos templates |
 | `validar-estrutura` | Roda e corrige o validador |
 | `sugerir-funcionalidades` | Valida o projeto, pesquisa o mercado e propõe funcionalidades priorizadas em `docs/produto/` |
+| `versionamento-github` | Branch por demanda, commit, push, PR para a `develop` e promoção da `develop` para a `main` |
 
 ## Ferramentas suportadas
 

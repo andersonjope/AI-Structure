@@ -38,12 +38,12 @@ estão em `.ai/structure/rules/ci.md`. O deploy encadeado a este workflow está 
 ```yaml
 name: <CI_WORKFLOW_NAME>
 
-# Push só na branch de produção: nas demais, o pull_request já cobre, e push + PR
-# rodariam tudo duas vezes. Mudança só de documentação não dispara CI (e, na
+# Push só em develop e main: nas demais branches, o pull_request já cobre, e push +
+# PR rodariam tudo duas vezes. Mudança só de documentação não dispara CI (e, na
 # branch de produção, também não gera deploy, que depende deste workflow).
 on:
   push:
-    branches: [<BRANCH_PROD>]
+    branches: [develop, main]
     paths-ignore: &docs
       - 'docs/**'
       - '.ai/**'

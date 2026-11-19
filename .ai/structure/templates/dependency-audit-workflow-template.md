@@ -37,7 +37,7 @@ name: Auditoria de dependências
 # baixos aparecem no log para triagem.
 on:
   push:
-    branches: [<BRANCH_PROD>]
+    branches: [develop, main]
     paths: &deps
       - '<ARQUIVOS_DE_DEPENDENCIA>'
       - '.github/workflows/dependency-audit.yml'
